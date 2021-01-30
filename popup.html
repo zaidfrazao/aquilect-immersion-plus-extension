@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="popup.css" />
+    <script type="module" src="popupInterface.js"></script>
+  </head>
+  <body>
+    <div id="wrapper">
+      <div id="header">
+        <h1>Aquilect Immersion Tracker</h1>
+      </div>
+      <div id="loadingWrapper">
+        <span>Loading...</span>
+      </div>
+      <div id="contentWrapper">
+        <div id="buttonGroup">
+          <button id="activeImmersionButton" class="groupedActive">
+            Active
+          </button>
+          <button id="passiveImmersionButton" class="groupedInactive">
+            Passive
+          </button>
+        </div>
+        <span id="today">Today</span>
+        <div id="timer">00:00:00</div>
+        <button id="timerButton">Start Session</button>
+      </div>
+    </div>
+    <script src="popup.js"></script>
+  </body>
+</html>

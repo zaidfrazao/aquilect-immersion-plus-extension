@@ -1,0 +1,32 @@
+{
+  "manifest_version": 3,
+  "name": "Aquilect Immersion Tracker",
+  "description": "Track active and passive immersion hours for language learning through aquisition.",
+  "author": "Kalan Interactive",
+  "version": "1.0",
+  "action": {
+    "default_title": "Log immersion",
+    "default_popup": "popup.html"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "permissions": ["activeTab", "storage"],
+  "content_scripts": [
+    {
+      "matches": ["*://www.youtube.com/watch?v=*"],
+      "css": ["youtubeTracker.css"],
+      "js": ["youtubeTracker.js"]
+    },
+    {
+      "matches": ["*://animelon.com/video/*"],
+      "css": ["animelonTracker.css"],
+      "js": ["animelonTracker.js"]
+    },
+    {
+      "matches": ["*://www.netflix.com/watch/*"],
+      "css": ["llnTracker.css"],
+      "js": ["llnTracker.js"]
+    }
+  ]
+}
