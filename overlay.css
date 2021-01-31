@@ -72,6 +72,18 @@
   padding: 18px;
 }
 
+#aqActiveIndicator.activeSession {
+  font-size: 22px;
+  margin-right: 8px;
+  color: #43a047;
+}
+
+#aqActiveIndicator.inactiveSession {
+  font-size: 22px;
+  margin-right: 8px;
+  color: #e53935;
+}
+
 #aqTimerButton {
   transition: background-color 0.25s ease-in-out 0s;
   outline: none;

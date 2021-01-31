@@ -1,6 +1,7 @@
 {
   "manifest_version": 3,
-  "name": "Aquilect Immersion Tracker",
+  "name": "Aquilect Immersion+",
+  "short_name": "Immersion+",
   "description": "Track active and passive immersion hours for language learning through aquisition.",
   "author": "Kalan Interactive",
   "version": "1.0",

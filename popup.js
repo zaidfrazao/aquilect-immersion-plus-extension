@@ -4,6 +4,7 @@ let timerButton = document.getElementById('timerButton');
 let timer = document.getElementById('timer');
 let contentWrapper = document.getElementById('contentWrapper');
 let loadingWrapper = document.getElementById('loadingWrapper');
+let activeIndicator = document.getElementById('activeIndicator');
 
 let cachedImmersionType = null;
 let cachedTimerStatus = null;
@@ -143,10 +144,12 @@ const getTimerStatus = () => {
     cachedTimerStatus = timerStatus;
     if (timerStatus === 'PAUSED') {
       timerButton.innerText = 'Start Session';
+      activeIndicator.className = 'inactiveSession';
       chrome.action.setBadgeText({ text: 'OFF' });
       chrome.action.setBadgeBackgroundColor({ color: '#c62828' });
     } else {
       timerButton.innerText = 'End Session';
+      activeIndicator.className = 'activeSession';
       chrome.action.setBadgeText({ text: 'ON' });
       chrome.action.setBadgeBackgroundColor({ color: '#2e7d32' });
     }
@@ -174,6 +177,7 @@ const handleActiveImmersionToggle = () => {
     chrome.storage.sync.set({ immersionType: 'ACTIVE' });
     activeImmersionButton.className = 'groupedActive';
     passiveImmersionButton.className = 'groupedInactive';
+    activeIndicator.className = 'inactiveSession';
   });
 };
 
@@ -194,6 +198,7 @@ const handlePassiveImmersionToggle = () => {
     chrome.storage.sync.set({ immersionType: 'PASSIVE' });
     passiveImmersionButton.className = 'groupedActive';
     activeImmersionButton.className = 'groupedInactive';
+    activeIndicator.className = 'inactiveSession';
   });
 };
 
@@ -215,6 +220,7 @@ const startSession = () => {
 const handleTimerButtonClicks = () => {
   timerButton.addEventListener('click', async () => {
     if (cachedTimerStatus === 'PAUSED') {
+      activeIndicator.className = 'activeSession';
       timerButton.innerText = 'End Session';
       cachedTimerStatus = 'ACTIVE';
       chrome.action.setBadgeText({ text: 'ON' });
@@ -222,6 +228,7 @@ const handleTimerButtonClicks = () => {
       startSession();
       startTimer();
     } else {
+      activeIndicator.className = 'inactiveSession';
       timerButton.innerText = 'Start Session';
       cachedTimerStatus = 'PAUSED';
       chrome.action.setBadgeText({ text: 'OFF' });

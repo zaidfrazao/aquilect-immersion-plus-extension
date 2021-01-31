@@ -1,4 +1,5 @@
 let injectionPoint = document.getElementById('watch-page-skeleton');
+if (!injectionPoint) injectionPoint = document.getElementById('player');
 if (!injectionPoint) injectionPoint = document.getElementById('appMountPoint');
 if (!injectionPoint)
   injectionPoint = document.getElementsByClassName('discordContainer')[0];
@@ -13,10 +14,17 @@ globalWrapper.appendChild(outerWrapper);
 let header = document.createElement('div');
 outerWrapper.appendChild(header);
 
+let activeIndicator = document.createElement('span');
 let headerText = document.createElement('h1');
+let headerTextInner = document.createElement('span');
 header.appendChild(headerText);
 header.setAttribute('id', 'aqHeader');
-headerText.innerHTML = 'Aquilect Immersion+';
+headerText.appendChild(activeIndicator);
+headerText.appendChild(headerTextInner);
+activeIndicator.setAttribute('id', 'aqActiveIndicator');
+activeIndicator.setAttribute('class', 'inactiveSession');
+activeIndicator.innerHTML = '&#9679';
+headerTextInner.innerHTML = 'Aquilect Immersion+';
 
 let loadingWrapper = document.createElement('div');
 let loadingWrapperText = document.createElement('span');
@@ -67,6 +75,7 @@ let globalWrapperDom = document.getElementById('aqGlobalWrapper');
 let contentWrapperDom = document.getElementById('aqContentWrapper');
 let loadingWrapperDom = document.getElementById('aqLoadingWrapper');
 let headerDom = document.getElementById('aqHeader');
+let activeIndicatorDom = document.getElementById('aqActiveIndicator');
 
 let cachedImmersionType = null;
 let cachedTimerStatus = null;
@@ -77,8 +86,8 @@ let cachedSession = {
   endTime: undefined,
   sessionLengthMilliseconds: undefined,
 };
-let isSessionLoaded = false;
 let cachedTotalImmersionTimeMilliseconds = null;
+let isSessionLoaded = false;
 
 let timeElapsedMilliseconds = 0;
 let timerCounter = null;
@@ -182,18 +191,22 @@ const getTotalImmersionTimeMilliseconds = (immersionType) => {
   }
 };
 
+const updateImmersionType = (newImmersionType) => {
+  cachedImmersionType = newImmersionType;
+  getTotalImmersionTimeMilliseconds(newImmersionType);
+
+  if (newImmersionType === 'ACTIVE') {
+    activeImmersionButtonDom.className = 'groupedActive';
+    passiveImmersionButtonDom.className = 'groupedInactive';
+  } else {
+    passiveImmersionButtonDom.className = 'groupedActive';
+    activeImmersionButtonDom.className = 'groupedInactive';
+  }
+};
+
 const getImmersionType = () => {
   chrome.storage.sync.get('immersionType', ({ immersionType }) => {
-    cachedImmersionType = immersionType;
-    getTotalImmersionTimeMilliseconds(immersionType);
-
-    if (immersionType === 'ACTIVE') {
-      activeImmersionButtonDom.className = 'groupedActive';
-      passiveImmersionButtonDom.className = 'groupedInactive';
-    } else {
-      passiveImmersionButtonDom.className = 'groupedActive';
-      activeImmersionButtonDom.className = 'groupedInactive';
-    }
+    updateImmersionType(immersionType);
 
     if (isStateReady()) {
       initializeUi();
@@ -205,9 +218,11 @@ const getTimerStatus = () => {
   chrome.storage.sync.get('timerStatus', ({ timerStatus }) => {
     cachedTimerStatus = timerStatus;
     if (timerStatus === 'PAUSED') {
-      timerButton.innerText = 'Start Session';
+      timerButtonDom.innerText = 'Start Session';
+      activeIndicatorDom.className = 'inactiveSession';
     } else {
-      timerButton.innerText = 'End Session';
+      timerButtonDom.innerText = 'End Session';
+      activeIndicatorDom.className = 'activeSession';
     }
 
     if (isStateReady()) {
@@ -233,6 +248,7 @@ const handleActiveImmersionToggle = () => {
     chrome.storage.sync.set({ immersionType: 'ACTIVE' });
     activeImmersionButtonDom.className = 'groupedActive';
     passiveImmersionButtonDom.className = 'groupedInactive';
+    activeIndicatorDom.className = 'inactiveSession';
   });
 };
 
@@ -253,6 +269,7 @@ const handlePassiveImmersionToggle = () => {
     chrome.storage.sync.set({ immersionType: 'PASSIVE' });
     passiveImmersionButtonDom.className = 'groupedActive';
     activeImmersionButtonDom.className = 'groupedInactive';
+    activeIndicatorDom.className = 'inactiveSession';
   });
 };
 
@@ -278,10 +295,12 @@ const handleTimerButtonClicks = () => {
       cachedTimerStatus = 'ACTIVE';
       startSession();
       startTimer();
+      activeIndicatorDom.className = 'activeSession';
     } else {
       timerButtonDom.innerText = 'Start Session';
       cachedTimerStatus = 'PAUSED';
       stopTimer();
+      activeIndicatorDom.className = 'inactiveSession';
     }
   });
 };
@@ -298,6 +317,66 @@ const handleMinimizeClicks = () => {
   });
 };
 
+const checkForCacheUpdates = () => {
+  chrome.storage.onChanged.addListener(() => {
+    chrome.storage.sync.get(
+      [
+        'immersionType',
+        'timerStatus',
+        'totalActiveImmersionTimeMilliseconds',
+        'totalPassiveImmersionTimeMilliseconds',
+        'currentSession',
+      ],
+      (result) => {
+        if (cachedImmersionType !== result.immersionType) {
+          updateImmersionType(result.immersionType);
+        }
+        if (cachedTimerStatus !== result.timerStatus) {
+          cachedTimerStatus = result.timerStatus;
+          if (result.timerStatus === 'PAUSED') {
+            activeIndicatorDom.className = 'inactiveSession';
+            timerButtonDom.innerText = 'Start Session';
+            cachedTimerStatus = 'PAUSED';
+            cachedSession = {
+              type: undefined,
+              status: undefined,
+              startTime: undefined,
+              endTime: undefined,
+              sessionLengthMilliseconds: undefined,
+            };
+            stopTimer();
+          } else {
+            activeIndicatorDom.className = 'activeSession';
+            timerButtonDom.innerText = 'End Session';
+            cachedTimerStatus = 'ACTIVE';
+            cachedSession = result.currentSession;
+            cachedTotalImmersionTimeMilliseconds =
+              cachedImmersionType === 'ACTIVE'
+                ? result.totalActiveImmersionTimeMilliseconds
+                : result.totalPassiveImmersionTimeMilliseconds;
+            startTimer();
+          }
+        }
+        if (
+          cachedImmersionType === 'ACTIVE' &&
+          cachedTotalImmersionTimeMilliseconds !==
+            result.totalActiveImmersionTimeMilliseconds
+        ) {
+          cachedTotalImmersionTimeMilliseconds =
+            result.totalActiveImmersionTimeMilliseconds;
+        } else if (
+          cachedImmersionType === 'PASSIVE' &&
+          cachedTotalImmersionTimeMilliseconds !==
+            result.totalPassiveImmersionTimeMilliseconds
+        ) {
+          cachedTotalImmersionTimeMilliseconds =
+            result.totalPassiveImmersionTimeMilliseconds;
+        }
+      }
+    );
+  });
+};
+
 getImmersionType();
 getTimerStatus();
 getSession();
@@ -305,3 +384,4 @@ handleActiveImmersionToggle();
 handlePassiveImmersionToggle();
 handleTimerButtonClicks();
 handleMinimizeClicks();
+checkForCacheUpdates();
