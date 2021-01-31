@@ -15,15 +15,19 @@ let header = document.createElement('div');
 outerWrapper.appendChild(header);
 
 let activeIndicator = document.createElement('span');
+let arrowIndicator = document.createElement('span');
 let headerText = document.createElement('h1');
 let headerTextInner = document.createElement('span');
 header.appendChild(headerText);
 header.setAttribute('id', 'aqHeader');
 headerText.appendChild(activeIndicator);
 headerText.appendChild(headerTextInner);
+headerText.appendChild(arrowIndicator);
 activeIndicator.setAttribute('id', 'aqActiveIndicator');
 activeIndicator.setAttribute('class', 'inactiveSession');
 activeIndicator.innerHTML = '&#9679';
+arrowIndicator.setAttribute('id', 'aqArrowIndicator');
+arrowIndicator.innerHTML = '&#11167';
 headerTextInner.innerHTML = 'Aquilect Immersion+';
 
 let loadingWrapper = document.createElement('div');
@@ -76,6 +80,7 @@ let contentWrapperDom = document.getElementById('aqContentWrapper');
 let loadingWrapperDom = document.getElementById('aqLoadingWrapper');
 let headerDom = document.getElementById('aqHeader');
 let activeIndicatorDom = document.getElementById('aqActiveIndicator');
+let arrowIndicatorDom = document.getElementById('aqArrowIndicator');
 
 let cachedImmersionType = null;
 let cachedTimerStatus = null;
@@ -310,9 +315,11 @@ const handleMinimizeClicks = () => {
     if (isMinimized) {
       isMinimized = false;
       globalWrapperDom.className = '';
+      arrowIndicatorDom.innerHTML = '&#11167';
     } else {
       isMinimized = true;
       globalWrapperDom.className = 'minimized';
+      arrowIndicatorDom.innerHTML = '&#11165';
     }
   });
 };

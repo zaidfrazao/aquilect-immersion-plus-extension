@@ -18,10 +18,10 @@
 
 #aqHeader {
   padding: 18px;
-  border-bottom: 1px solid #e0e0e0;
   transition: background-color 0.35s ease-in-out 0s;
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
+  background-color: #c5e1a5;
 }
 
 #aqHeader:hover {
@@ -35,7 +35,7 @@
 #aqHeader h1 {
   font-size: 16px;
   font-weight: normal;
-  color: #212121;
+  color: #003d00;
   margin: 0;
 }
 
@@ -74,14 +74,20 @@
 
 #aqActiveIndicator.activeSession {
   font-size: 22px;
-  margin-right: 8px;
-  color: #43a047;
+  margin-right: 12px;
+  color: #33691e;
 }
 
 #aqActiveIndicator.inactiveSession {
   font-size: 22px;
-  margin-right: 8px;
-  color: #e53935;
+  margin-right: 12px;
+  color: #d50000;
+}
+
+#aqArrowIndicator {
+  font-size: 14px;
+  color: #9ccc65;
+  margin-left: 12px;
 }
 
 #aqTimerButton {
@@ -99,7 +105,7 @@
   font-size: 12px;
 }
 
-#aqContentWrapper button:hover {
+#aqTimerButton:hover {
   cursor: pointer;
   background-color: #76b43f;
   transition: background-color 0.25s ease-in-out 0s;
@@ -113,7 +119,7 @@
 
 #aqButtonGroup button.groupedActive {
   outline: none;
-  color: #000;
+  color: #212121;
   width: inherit;
   height: inherit;
   background-color: #99d066;
@@ -136,7 +142,7 @@
   border-radius: 0;
   width: inherit;
   height: inherit;
-  color: #000;
+  color: #212121;
   background-color: #eeeeee;
   border: 1px solid #e0e0e0;
   padding: 8px;
