@@ -1,14 +1,13 @@
-const related = document.getElementById('appMountPoint');
-chrome.runtime.sendMessage({
-  type: 'debug',
-  message: related,
-});
+let injectionPoint = document.getElementById('watch-page-skeleton');
+if (!injectionPoint) injectionPoint = document.getElementById('appMountPoint');
+if (!injectionPoint)
+  injectionPoint = document.getElementsByClassName('discordContainer')[0];
 
 let globalWrapper = document.createElement('div');
 let outerWrapper = document.createElement('div');
 let contentWrapper = document.createElement('div');
-outerWrapper.setAttribute('id', 'trackerWrapper');
-contentWrapper.setAttribute('id', 'contentWrapper');
+outerWrapper.setAttribute('id', 'aqGlobalWrapper');
+contentWrapper.setAttribute('id', 'aqContentWrapper');
 globalWrapper.appendChild(outerWrapper);
 
 let header = document.createElement('div');
@@ -16,18 +15,18 @@ outerWrapper.appendChild(header);
 
 let headerText = document.createElement('h1');
 header.appendChild(headerText);
-header.setAttribute('id', 'header');
-headerText.innerHTML = 'Aquilect Immersion Tracker';
+header.setAttribute('id', 'aqHeader');
+headerText.innerHTML = 'Aquilect Immersion+';
 
 let loadingWrapper = document.createElement('div');
 let loadingWrapperText = document.createElement('span');
-loadingWrapper.setAttribute('id', 'loadingWrapper');
+loadingWrapper.setAttribute('id', 'aqLoadingWrapper');
 loadingWrapperText.innerHTML = 'Loading...';
 loadingWrapper.appendChild(loadingWrapperText);
 outerWrapper.appendChild(loadingWrapper);
 
 let buttonGroup = document.createElement('div');
-buttonGroup.setAttribute('id', 'buttonGroup');
+buttonGroup.setAttribute('id', 'aqButtonGroup');
 let activeImmersionButton = document.createElement('button');
 activeImmersionButton.setAttribute('id', 'activeImmersionButton');
 activeImmersionButton.setAttribute('class', 'groupedActive');
@@ -41,31 +40,33 @@ buttonGroup.appendChild(passiveImmersionButton);
 contentWrapper.appendChild(buttonGroup);
 
 let todayText = document.createElement('span');
-todayText.setAttribute('id', 'today');
+todayText.setAttribute('id', 'aqTodayText');
 todayText.innerHTML = 'Today';
 contentWrapper.appendChild(todayText);
 
 let timer = document.createElement('div');
-timer.setAttribute('id', 'timer');
+timer.setAttribute('id', 'aqTimer');
 timer.innerHTML = '00:00:00';
 contentWrapper.appendChild(timer);
 
 let timerButton = document.createElement('button');
-timerButton.setAttribute('id', 'timerButton');
+timerButton.setAttribute('id', 'aqTimerButton');
 timerButton.innerHTML = 'Start Session';
 contentWrapper.appendChild(timerButton);
 
 outerWrapper.appendChild(contentWrapper);
-related.insertAdjacentHTML('beforebegin', globalWrapper.innerHTML);
+injectionPoint.insertAdjacentHTML('beforebegin', globalWrapper.innerHTML);
 
 let activeImmersionButtonDom = document.getElementById('activeImmersionButton');
 let passiveImmersionButtonDom = document.getElementById(
   'passiveImmersionButton'
 );
-let timerButtonDom = document.getElementById('timerButton');
-let timerDom = document.getElementById('timer');
-let contentWrapperDom = document.getElementById('contentWrapper');
-let loadingWrapperDom = document.getElementById('loadingWrapper');
+let timerButtonDom = document.getElementById('aqTimerButton');
+let timerDom = document.getElementById('aqTimer');
+let globalWrapperDom = document.getElementById('aqGlobalWrapper');
+let contentWrapperDom = document.getElementById('aqContentWrapper');
+let loadingWrapperDom = document.getElementById('aqLoadingWrapper');
+let headerDom = document.getElementById('aqHeader');
 
 let cachedImmersionType = null;
 let cachedTimerStatus = null;
@@ -81,6 +82,7 @@ let cachedTotalImmersionTimeMilliseconds = null;
 
 let timeElapsedMilliseconds = 0;
 let timerCounter = null;
+let isMinimized = false;
 
 const updateTimerText = (sessionStartTime) => {
   let time = cachedTotalImmersionTimeMilliseconds;
@@ -137,10 +139,6 @@ const showContent = () => {
 const initializeUi = () => {
   showContent();
   updateTimerText(cachedSession.startTime);
-  chrome.runtime.sendMessage({
-    type: 'debug',
-    message: 'INIT',
-  });
 
   if (cachedTimerStatus === 'ACTIVE') {
     startTimer();
@@ -288,9 +286,22 @@ const handleTimerButtonClicks = () => {
   });
 };
 
+const handleMinimizeClicks = () => {
+  headerDom.addEventListener('click', async () => {
+    if (isMinimized) {
+      isMinimized = false;
+      globalWrapperDom.className = '';
+    } else {
+      isMinimized = true;
+      globalWrapperDom.className = 'minimized';
+    }
+  });
+};
+
 getImmersionType();
 getTimerStatus();
 getSession();
 handleActiveImmersionToggle();
 handlePassiveImmersionToggle();
 handleTimerButtonClicks();
+handleMinimizeClicks();

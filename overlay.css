@@ -1,86 +1,78 @@
-html,
-body {
-  padding: 0;
-  margin: 0;
-}
-
-#trackerWrapper {
+#aqGlobalWrapper {
   position: fixed;
   bottom: 0;
   right: 110px;
   z-index: 1000;
   background-color: #f5f5f5;
   text-align: center;
-  padding: 24px;
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   transition: bottom 0.25s ease-in-out 0s;
 }
 
-#trackerWrapper.minimized {
-  bottom: -230px;
+#aqGlobalWrapper.minimized {
+  bottom: -224px;
   transition: bottom 0.25s ease-in-out 0s;
 }
 
-#header {
+#aqHeader {
   padding: 18px;
-  padding-top: 0px;
   border-bottom: 1px solid #e0e0e0;
-  font-size: 2.2rem;
+  transition: background-color 0.35s ease-in-out 0s;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
 }
 
-#header h1 {
-  font-size: 1.6rem;
-  flex-grow: 1;
+#aqHeader:hover {
+  cursor: pointer;
+  background-color: #dcedc8;
+  transition: background-color 0.35s ease-in-out 0s;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
 }
 
-#minimizeButton {
-  position: absolute;
-  right: 8px;
-  top: 0;
-  color: #9e9e9e;
-  background: none;
-  font-size: 3rem;
-  padding: 4px;
-  height: 32px;
-  width: 32px;
+#aqHeader h1 {
+  font-size: 16px;
+  font-weight: normal;
+  color: #212121;
+  margin: 0;
 }
 
-#today {
+#aqTodayText {
   display: block;
   margin-top: 24px;
+  font-size: 12px;
+  color: #212121;
 }
 
-#timer {
-  font-size: 3.2rem;
+#aqTimer {
+  font-size: 36px;
   padding: 0;
   margin-bottom: 8px;
   margin-bottom: 24px;
+  color: #212121;
 }
 
-#loadingWrapper {
+#aqLoadingWrapper {
   display: flex;
   align-items: center;
   justify-content: center;
   height: 200px;
 }
 
-#loading span {
-  font-size: 2rem;
+#aqLoadingWrapper span {
+  font-size: 24px;
   text-align: center;
+  color: #212121;
 }
 
-#contentWrapper {
+#aqContentWrapper {
   display: none;
+  padding: 18px;
 }
 
-h1 {
-  font-size: 1.1rem;
-  margin: 0;
-}
-
-button {
+#aqTimerButton {
   transition: background-color 0.25s ease-in-out 0s;
   outline: none;
   color: #fff;
@@ -92,23 +84,22 @@ button {
   border-radius: 4px;
   font-weight: bold;
   text-transform: uppercase;
-  font-size: 1.2rem;
+  font-size: 12px;
 }
 
-button:hover {
+#aqContentWrapper button:hover {
   cursor: pointer;
   background-color: #76b43f;
   transition: background-color 0.25s ease-in-out 0s;
 }
 
-#buttonGroup {
-  padding-top: 24px;
+#aqButtonGroup {
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-button.groupedActive {
+#aqButtonGroup button.groupedActive {
   outline: none;
   color: #000;
   width: inherit;
@@ -120,15 +111,15 @@ button.groupedActive {
   margin: 0;
   font-weight: bold;
   text-transform: lowercase;
-  font-size: 1.2rem;
+  font-size: 12px;
   width: 100px;
 }
 
-button.groupedActive:hover {
+#aqButtonGroup button.groupedActive:hover {
   cursor: default;
 }
 
-button.groupedInactive {
+#aqButtonGroup button.groupedInactive {
   outline: none;
   border-radius: 0;
   width: inherit;
@@ -140,22 +131,22 @@ button.groupedInactive {
   margin: 0;
   font-weight: bold;
   text-transform: lowercase;
-  font-size: 1.2rem;
+  font-size: 12px;
   width: 100px;
 }
 
-button.groupedInactive:hover {
+#aqButtonGroup button.groupedInactive:hover {
   cursor: pointer;
 }
 
-.groupedActive:first-child,
-.groupedInactive:first-child {
+#aqButtonGroup .groupedActive:first-child,
+#aqButtonGroup .groupedInactive:first-child {
   border-top-left-radius: 8px;
   border-bottom-left-radius: 8px;
 }
 
-.groupedActive:last-child,
-.groupedInactive:last-child {
+#aqButtonGroup .groupedActive:last-child,
+#aqButtonGroup .groupedInactive:last-child {
   border-top-right-radius: 8px;
   border-bottom-right-radius: 8px;
 }

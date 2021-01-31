@@ -14,19 +14,13 @@
   "permissions": ["activeTab", "storage"],
   "content_scripts": [
     {
-      "matches": ["*://www.youtube.com/watch?v=*"],
-      "css": ["youtubeTracker.css"],
-      "js": ["youtubeTracker.js"]
-    },
-    {
-      "matches": ["*://animelon.com/video/*"],
-      "css": ["animelonTracker.css"],
-      "js": ["animelonTracker.js"]
-    },
-    {
-      "matches": ["*://www.netflix.com/watch/*"],
-      "css": ["llnTracker.css"],
-      "js": ["llnTracker.js"]
+      "matches": [
+        "*://www.youtube.com/*",
+        "*://animelon.com/*",
+        "*://www.netflix.com/*"
+      ],
+      "css": ["overlay.css"],
+      "js": ["overlay.js"]
     }
   ]
 }

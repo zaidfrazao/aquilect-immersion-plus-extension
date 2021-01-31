@@ -1,20 +1,17 @@
 chrome.runtime.onInstalled.addListener(() => {
-  chrome.storage.sync.set(
-    {
-      immersionType: 'ACTIVE',
-      timerStatus: 'PAUSED',
-      totalActiveImmersionTimeMilliseconds: 0,
-      totalPassiveImmersionTimeMilliseconds: 0,
-      currentSession: {
-        type: undefined,
-        status: undefined,
-        startTime: undefined,
-        endTime: undefined,
-        sessionLengthMilliseconds: undefined,
-      },
+  chrome.storage.sync.set({
+    immersionType: 'ACTIVE',
+    timerStatus: 'PAUSED',
+    totalActiveImmersionTimeMilliseconds: 0,
+    totalPassiveImmersionTimeMilliseconds: 0,
+    currentSession: {
+      type: undefined,
+      status: undefined,
+      startTime: undefined,
+      endTime: undefined,
+      sessionLengthMilliseconds: undefined,
     },
-    () => console.log('Variables have been initialized.')
-  );
+  });
   chrome.action.setBadgeText({ text: 'OFF' });
   chrome.action.setBadgeBackgroundColor({ color: '#c62828' });
 });
