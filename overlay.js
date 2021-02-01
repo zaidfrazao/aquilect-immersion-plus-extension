@@ -78,6 +78,7 @@ let activeImmersionButtonDom = document.getElementById('activeImmersionButton');
 let passiveImmersionButtonDom = document.getElementById(
   'passiveImmersionButton'
 );
+let studyButtonDom = document.getElementById('studyButton');
 let timerButtonDom = document.getElementById('aqTimerButton');
 let timerDom = document.getElementById('aqTimer');
 let globalWrapperDom = document.getElementById('aqGlobalWrapper');
@@ -187,11 +188,22 @@ const getTotalImmersionTimeMilliseconds = (immersionType) => {
         }
       }
     );
-  } else {
+  } else if (immersionType === 'PASSIVE') {
     chrome.storage.sync.get(
       'totalPassiveImmersionTimeMilliseconds',
       ({ totalPassiveImmersionTimeMilliseconds }) => {
         cachedTotalImmersionTimeMilliseconds = totalPassiveImmersionTimeMilliseconds;
+
+        if (isStateReady()) {
+          initializeUi();
+        }
+      }
+    );
+  } else {
+    chrome.storage.sync.get(
+      'totalStudyTimeMilliseconds',
+      ({ totalStudyTimeMilliseconds }) => {
+        cachedTotalImmersionTimeMilliseconds = totalStudyTimeMilliseconds;
 
         if (isStateReady()) {
           initializeUi();
@@ -208,9 +220,15 @@ const updateImmersionType = (newImmersionType) => {
   if (newImmersionType === 'ACTIVE') {
     activeImmersionButtonDom.className = 'groupedActive';
     passiveImmersionButtonDom.className = 'groupedInactive';
-  } else {
+    studyButtonDom.className = 'groupedInactive';
+  } else if (newImmersionType === 'PASSIVE') {
     passiveImmersionButtonDom.className = 'groupedActive';
     activeImmersionButtonDom.className = 'groupedInactive';
+    studyButtonDom.className = 'groupedInactive';
+  } else {
+    studyButtonDom.className = 'groupedActive';
+    activeImmersionButtonDom.className = 'groupedInactive';
+    passiveImmersionButtonDom.className = 'groupedInactive';
   }
 };
 
@@ -256,6 +274,7 @@ const handleActiveImmersionToggle = () => {
     cachedImmersionType = 'ACTIVE';
     getTotalImmersionTimeMilliseconds('ACTIVE');
     chrome.storage.sync.set({ immersionType: 'ACTIVE' });
+    studyButtonDom.className = 'groupedInactive';
     activeImmersionButtonDom.className = 'groupedActive';
     passiveImmersionButtonDom.className = 'groupedInactive';
     activeIndicatorDom.className = 'inactiveSession';
@@ -277,7 +296,30 @@ const handlePassiveImmersionToggle = () => {
     cachedImmersionType = 'PASSIVE';
     getTotalImmersionTimeMilliseconds('PASSIVE');
     chrome.storage.sync.set({ immersionType: 'PASSIVE' });
+    studyButtonDom.className = 'groupedInactive';
     passiveImmersionButtonDom.className = 'groupedActive';
+    activeImmersionButtonDom.className = 'groupedInactive';
+    activeIndicatorDom.className = 'inactiveSession';
+  });
+};
+
+const handleStudyToggle = () => {
+  studyButtonDom.addEventListener('click', async () => {
+    if (cachedTimerStatus === 'ACTIVE') {
+      stopTimer();
+    }
+    cachedSession = {
+      type: undefined,
+      status: undefined,
+      startTime: undefined,
+      endTime: undefined,
+      sessionLengthMilliseconds: undefined,
+    };
+    cachedImmersionType = 'STUDY';
+    getTotalImmersionTimeMilliseconds('STUDY');
+    chrome.storage.sync.set({ immersionType: 'STUDY' });
+    studyButtonDom.className = 'groupedActive';
+    passiveImmersionButtonDom.className = 'groupedInactive';
     activeImmersionButtonDom.className = 'groupedInactive';
     activeIndicatorDom.className = 'inactiveSession';
   });
@@ -337,6 +379,7 @@ const checkForCacheUpdates = () => {
         'timerStatus',
         'totalActiveImmersionTimeMilliseconds',
         'totalPassiveImmersionTimeMilliseconds',
+        'totalStudyTimeMilliseconds',
         'currentSession',
       ],
       (result) => {
@@ -362,10 +405,16 @@ const checkForCacheUpdates = () => {
             timerButtonDom.innerText = 'End Session';
             cachedTimerStatus = 'ACTIVE';
             cachedSession = result.currentSession;
-            cachedTotalImmersionTimeMilliseconds =
-              cachedImmersionType === 'ACTIVE'
-                ? result.totalActiveImmersionTimeMilliseconds
-                : result.totalPassiveImmersionTimeMilliseconds;
+            if (cachedImmersionType === 'ACTIVE') {
+              cachedTotalImmersionTimeMilliseconds =
+                result.totalActiveImmersionTimeMilliseconds;
+            } else if (cachedImmersionType === 'PASSIVE') {
+              cachedTotalImmersionTimeMilliseconds =
+                result.totalPassiveImmersionTimeMilliseconds;
+            } else {
+              cachedTotalImmersionTimeMilliseconds =
+                result.totalStudyTimeMilliseconds;
+            }
             startTimer();
           }
         }
@@ -383,6 +432,13 @@ const checkForCacheUpdates = () => {
         ) {
           cachedTotalImmersionTimeMilliseconds =
             result.totalPassiveImmersionTimeMilliseconds;
+        } else if (
+          cachedImmersionType === 'STUDY' &&
+          cachedTotalImmersionTimeMilliseconds !==
+            result.totalStudyTimeMilliseconds
+        ) {
+          cachedTotalImmersionTimeMilliseconds =
+            result.totalStudyTimeMilliseconds;
         }
       }
     );
@@ -394,6 +450,7 @@ getTimerStatus();
 getSession();
 handleActiveImmersionToggle();
 handlePassiveImmersionToggle();
+handleStudyToggle();
 handleTimerButtonClicks();
 handleMinimizeClicks();
 checkForCacheUpdates();

@@ -4,6 +4,7 @@ chrome.runtime.onInstalled.addListener(() => {
     timerStatus: 'PAUSED',
     totalActiveImmersionTimeMilliseconds: 0,
     totalPassiveImmersionTimeMilliseconds: 0,
+    totalStudyTimeMilliseconds: 0,
     currentSession: {
       type: undefined,
       status: undefined,
@@ -58,10 +59,22 @@ chrome.runtime.onMessage.addListener((request) => {
           sessionLengthMilliseconds: undefined,
         },
       });
-    } else {
+    } else if (request.session.type === 'PASSIVE') {
       chrome.storage.sync.set({
         timerStatus: 'PAUSED',
         totalPassiveImmersionTimeMilliseconds: totalImmersionTimeMilliseconds,
+        currentSession: {
+          type: undefined,
+          status: undefined,
+          startTime: undefined,
+          endTime: undefined,
+          sessionLengthMilliseconds: undefined,
+        },
+      });
+    } else {
+      chrome.storage.sync.set({
+        timerStatus: 'PAUSED',
+        totalStudyTimeMilliseconds: totalImmersionTimeMilliseconds,
         currentSession: {
           type: undefined,
           status: undefined,
