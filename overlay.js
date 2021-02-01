@@ -47,8 +47,13 @@ let passiveImmersionButton = document.createElement('button');
 passiveImmersionButton.setAttribute('id', 'passiveImmersionButton');
 passiveImmersionButton.setAttribute('class', 'groupedInactive');
 passiveImmersionButton.innerHTML = 'passive';
+let studyButton = document.createElement('button');
+studyButton.setAttribute('id', 'studyButton');
+studyButton.setAttribute('class', 'groupedInactive');
+studyButton.innerHTML = 'study';
 buttonGroup.appendChild(activeImmersionButton);
 buttonGroup.appendChild(passiveImmersionButton);
+buttonGroup.appendChild(studyButton);
 contentWrapper.appendChild(buttonGroup);
 
 let todayText = document.createElement('span');

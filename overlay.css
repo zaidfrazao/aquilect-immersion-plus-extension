@@ -7,7 +7,7 @@
   text-align: center;
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  box-shadow: 0 -4px 8px 0 rgba(0, 0, 0, 0.2), 0 -6px 20px 0 rgba(0, 0, 0, 0.19);
   transition: bottom 0.25s ease-in-out 0s;
 }
 
@@ -17,16 +17,16 @@
 }
 
 #aqHeader {
-  padding: 18px;
+  padding: 12px 18px;
   transition: background-color 0.35s ease-in-out 0s;
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
-  background-color: #c5e1a5;
+  background-color: #4fc3f7;
 }
 
 #aqHeader:hover {
   cursor: pointer;
-  background-color: #dcedc8;
+  background-color: #81d4fa;
   transition: background-color 0.35s ease-in-out 0s;
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
@@ -35,7 +35,7 @@
 #aqHeader h1 {
   font-size: 16px;
   font-weight: normal;
-  color: #003d00;
+  color: #212121;
   margin: 0;
 }
 
@@ -75,26 +75,26 @@
 #aqActiveIndicator.activeSession {
   font-size: 22px;
   margin-right: 12px;
-  color: #33691e;
+  color: #1b5e20;
 }
 
 #aqActiveIndicator.inactiveSession {
   font-size: 22px;
   margin-right: 12px;
-  color: #d50000;
+  color: #b71c1c;
 }
 
 #aqArrowIndicator {
   font-size: 14px;
-  color: #9ccc65;
+  color: #03a9f4;
   margin-left: 12px;
 }
 
 #aqTimerButton {
   transition: background-color 0.25s ease-in-out 0s;
   outline: none;
-  color: #fff;
-  background-color: #689f38;
+  color: #212121;
+  background-color: #4fc3f7;
   width: 100%;
   padding: 12px;
   height: 48px;
@@ -107,7 +107,7 @@
 
 #aqTimerButton:hover {
   cursor: pointer;
-  background-color: #76b43f;
+  background-color: #81d4fa;
   transition: background-color 0.25s ease-in-out 0s;
 }
 
@@ -122,19 +122,15 @@
   color: #212121;
   width: inherit;
   height: inherit;
-  background-color: #99d066;
+  background-color: #81c784;
   border-radius: 0;
   padding: 8px;
-  border: 1px solid #99d066;
+  border: 1px solid #81c784;
   margin: 0;
   font-weight: bold;
   text-transform: lowercase;
   font-size: 12px;
-  width: 100px;
-}
-
-#aqButtonGroup button.groupedActive:hover {
-  cursor: default;
+  width: 80px;
 }
 
 #aqButtonGroup button.groupedInactive {
@@ -150,7 +146,7 @@
   font-weight: bold;
   text-transform: lowercase;
   font-size: 12px;
-  width: 100px;
+  width: 80px;
 }
 
 #aqButtonGroup button.groupedInactive:hover {

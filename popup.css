@@ -5,33 +5,38 @@ body {
 }
 
 #wrapper {
+  width: 300px;
   background-color: #f5f5f5;
-  width: 240px;
   text-align: center;
-  padding: 18px;
+  padding: 0;
 }
 
 #header {
-  padding: 18px;
-  padding-top: 0px;
-  margin: 0;
-  border-bottom: 1px solid #e0e0e0;
+  padding: 12px;
+  transition: background-color 0.35s ease-in-out 0s;
+  background-color: #4fc3f7;
 }
 
 #header h1 {
+  font-size: 16px;
   font-weight: normal;
+  color: #212121;
+  margin: 0;
 }
 
 #today {
   display: block;
   margin-top: 24px;
+  font-size: 12px;
+  color: #212121;
 }
 
 #timer {
-  font-size: 2.6rem;
+  font-size: 36px;
   padding: 0;
   margin-bottom: 8px;
   margin-bottom: 24px;
+  color: #212121;
 }
 
 #loadingWrapper {
@@ -42,36 +47,33 @@ body {
 }
 
 #loading span {
-  font-size: 1.4rem;
+  font-size: 24px;
   text-align: center;
+  color: #212121;
 }
 
 #contentWrapper {
   display: none;
+  padding: 18px;
 }
 
 #activeIndicator.activeSession {
-  font-size: 28px;
-  margin-right: 4px;
-  color: #43a047;
+  font-size: 22px;
+  margin-right: 12px;
+  color: #1b5e20;
 }
 
 #activeIndicator.inactiveSession {
-  font-size: 28px;
-  margin-right: 4px;
-  color: #e53935;
-}
-
-h1 {
-  font-size: 1.1rem;
-  margin: 0;
+  font-size: 22px;
+  margin-right: 12px;
+  color: #b71c1c;
 }
 
 button {
   transition: background-color 0.25s ease-in-out 0s;
   outline: none;
-  color: #fff;
-  background-color: #689f38;
+  color: #212121;
+  background-color: #4fc3f7;
   width: 100%;
   padding: 12px;
   height: 48px;
@@ -79,17 +81,16 @@ button {
   border-radius: 4px;
   font-weight: bold;
   text-transform: uppercase;
-  font-size: 0.8rem;
+  font-size: 12px;
 }
 
 button:hover {
   cursor: pointer;
-  background-color: #76b43f;
+  background-color: #81d4fa;
   transition: background-color 0.25s ease-in-out 0s;
 }
 
 #buttonGroup {
-  padding-top: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -97,22 +98,18 @@ button:hover {
 
 button.groupedActive {
   outline: none;
-  color: #000;
+  color: #212121;
   width: inherit;
   height: inherit;
-  background-color: #99d066;
+  background-color: #81c784;
   border-radius: 0;
   padding: 8px;
-  border: 1px solid #99d066;
+  border: 1px solid #81c784;
   margin: 0;
   font-weight: bold;
   text-transform: lowercase;
-  font-size: 0.7rem;
-  width: 100px;
-}
-
-button.groupedActive:hover {
-  cursor: default;
+  font-size: 12px;
+  width: 80px;
 }
 
 button.groupedInactive {
@@ -120,15 +117,15 @@ button.groupedInactive {
   border-radius: 0;
   width: inherit;
   height: inherit;
-  color: #000;
+  color: #212121;
   background-color: #eeeeee;
   border: 1px solid #e0e0e0;
   padding: 8px;
   margin: 0;
   font-weight: bold;
   text-transform: lowercase;
-  font-size: 0.7rem;
-  width: 100px;
+  font-size: 12px;
+  width: 80px;
 }
 
 button.groupedInactive:hover {
