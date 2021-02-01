@@ -20,8 +20,14 @@
         "*://animelon.com/*",
         "*://www.netflix.com/*"
       ],
+      "exclude_matches": ["*://*/*watch?v=*"],
       "css": ["overlay.css"],
       "js": ["overlay.js"]
+    },
+    {
+      "matches": ["*://www.youtube.com/watch?v=*"],
+      "css": ["ytVideoInsert.css"],
+      "js": ["ytVideoInsert.js"]
     }
   ]
 }
