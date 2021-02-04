@@ -12,6 +12,7 @@
   "background": {
     "service_worker": "background.js"
   },
+  "host_permissions": ["https://us-central1-aquilect.cloudfunctions.net/*"],
   "permissions": ["activeTab", "storage"],
   "content_scripts": [
     {
@@ -20,7 +21,7 @@
         "*://animelon.com/*",
         "*://www.netflix.com/*"
       ],
-      "exclude_matches": ["*://*/*watch?v=*"],
+      "exclude_matches": ["*://*/watch?v=*"],
       "css": ["overlay.css"],
       "js": ["overlay.js"]
     },

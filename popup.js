@@ -49,6 +49,9 @@ const startTimer = () => {
 };
 
 const stopTimer = () => {
+  const startTime = cachedSession.startTime;
+  const endTime = new Date().toISOString();
+
   clearInterval(timerCounter);
   cachedTimerStatus = 'PAUSED';
   timerButton.innerText = 'Start Session';
@@ -59,6 +62,14 @@ const stopTimer = () => {
     session: cachedSession,
     oldTotalImmersionTimeMilliseconds: cachedTotalImmersionTimeMilliseconds,
   });
+
+  const xhr = new XMLHttpRequest();
+  xhr.open(
+    'GET',
+    `https://us-central1-aquilect.cloudfunctions.net/endSession?startTime=${startTime}&endTime=${endTime}`,
+    true
+  );
+  xhr.send();
 };
 
 const isStateReady = () => {
@@ -245,6 +256,7 @@ const handleStudyToggle = () => {
 };
 
 const startSession = () => {
+  const startTime = new Date().toISOString();
   const newSession = {
     type: cachedImmersionType,
     status: 'IN_PROGRESS',
@@ -257,6 +269,14 @@ const startSession = () => {
     type: 'start-session',
     session: newSession,
   });
+
+  const xhr = new XMLHttpRequest();
+  xhr.open(
+    'GET',
+    `https://us-central1-aquilect.cloudfunctions.net/startSession?type=${cachedImmersionType}&startTime=${startTime}&userId=OB3tFldo9DfCNYywzc7wHznCLGU2`,
+    true
+  );
+  xhr.send();
 };
 
 const handleTimerButtonClicks = () => {

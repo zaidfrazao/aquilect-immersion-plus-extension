@@ -10,7 +10,6 @@ chrome.runtime.onInstalled.addListener(() => {
       status: undefined,
       startTime: undefined,
       endTime: undefined,
-      sessionLengthMilliseconds: undefined,
     },
   });
   chrome.action.setBadgeText({ text: 'OFF' });
@@ -37,13 +36,6 @@ chrome.runtime.onMessage.addListener((request) => {
     let totalImmersionTimeMilliseconds =
       request.oldTotalImmersionTimeMilliseconds + sessionLengthMilliseconds;
 
-    console.log({
-      ...request.session,
-      status: 'COMPLETE',
-      endTime: endTime.toISOString(),
-      sessionLengthMilliseconds,
-    });
-
     chrome.action.setBadgeText({ text: 'OFF' });
     chrome.action.setBadgeBackgroundColor({ color: '#c62828' });
 
@@ -56,7 +48,6 @@ chrome.runtime.onMessage.addListener((request) => {
           status: undefined,
           startTime: undefined,
           endTime: undefined,
-          sessionLengthMilliseconds: undefined,
         },
       });
     } else if (request.session.type === 'PASSIVE') {
@@ -68,7 +59,6 @@ chrome.runtime.onMessage.addListener((request) => {
           status: undefined,
           startTime: undefined,
           endTime: undefined,
-          sessionLengthMilliseconds: undefined,
         },
       });
     } else {
@@ -80,7 +70,6 @@ chrome.runtime.onMessage.addListener((request) => {
           status: undefined,
           startTime: undefined,
           endTime: undefined,
-          sessionLengthMilliseconds: undefined,
         },
       });
     }
